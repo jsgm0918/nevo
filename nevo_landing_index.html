@@ -59,7 +59,7 @@
     a { color: var(--link); text-decoration: none; border-bottom: 1px dotted rgba(142,249,255,.4); }
     a:hover { border-bottom-color: var(--link); }
     .btns { display:flex; flex-wrap: wrap; gap:10px; margin: 14px 0; }
-    button { background: transparent; color: var(--text); border:1px solid rgba(255,255,255,.18); padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+    button { background: transparent; color: var(--text); border:1px solid rgba(255,255,255,.18); padding: 8px 12px; border-radius: 10px; cursor: pointer; transition: all 0.2s ease; }
     button:hover { border-color: var(--accent); color: var(--accent); }
     .section { display:none; animation: fade .35s ease; }
     .section.active { display:block; }
@@ -67,6 +67,8 @@
     .list { margin: 8px 0 0; padding-left: 18px; }
     footer { margin-top: 36px; color: var(--muted); text-align:center; }
     .hr { height:1px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.14), rgba(255,255,255,0)); margin: 14px 0; border:0; }
+    .status { color: var(--ok); font-weight: bold; }
+    .loading { color: var(--accent); }
   </style>
 </head>
 <body>
@@ -95,12 +97,13 @@
           <p><strong>N.E.V.O.</strong> is not just a name — it's a code. A universal script you can read your way.</p>
           <p class="muted">Common decodings include:</p>
           <ul class="list">
-            <li>None Existential Voices & Others</li>
+            <li>Non-Enthropic Voices & Others</li>
             <li>Next Era Virtual Orchestra</li>
-            <li>New Esoteric Vibes & Origins</li>
+            <li>Neo Esoteric Vibes & Origins</li>
           </ul>
           <hr class="hr" />
           <p><span class="kbd">ENTER</span> to proceed • choose a module above.</p>
+          <p class="status">STATUS: <span class="loading">DEPLOYED & ONLINE</span></p>
         </section>
 
         <!-- NEVO -->
@@ -133,7 +136,7 @@
           <p>Nebo is the intimate voice: poems, essays, novels, short stories that move as counterpoint wound to a sentient beat. Words become echoes; echoes become rhythm; rhythm becomes a shared consciousness archive.</p>
           <div class="card">
             <h3>Excerpt</h3>
-            <p><em>“I used to be Nenebo — a childhood key. Now I write as Nebo, where silence turns into pulse and memory becomes a safe-place we can meet.”</em></p>
+            <p><em>"I used to be Nenebo — a childhood key. Now I write as Nebo, where silence turns into pulse and memory becomes a safe-place we can meet."</em></p>
           </div>
         </section>
 
@@ -159,10 +162,10 @@
           <h2>[ CONTACT ] — Access Points</h2>
           <p>Email: <a href="mailto:jsgm0918@gmail.com">jsgm0918@gmail.com</a></p>
           <p>LinkedIn: <a href="https://www.linkedin.com/in/sebastiang0918" target="_blank" rel="noopener">linkedin.com/in/sebastiang0918</a></p>
-          <p>SoundCloud / Mixcloud: <a href="#" aria-disabled="true">@nevo</a></p>
-          <p>Instagram / TikTok: <a href="#" aria-disabled="true">@nevo</a></p>
-          <p>Web / Repository: <a href="#" aria-disabled="true">www.nevo.codes</a></p>
-          <p class="muted">Replace placeholders with your live links when ready.</p>
+          <p>SoundCloud / Mixcloud: <a href="#" aria-label="Coming soon">@nevo</a></p>
+          <p>Instagram / TikTok: <a href="#" aria-label="Coming soon">@nevo</a></p>
+          <p>Web / Repository: <a href="#" aria-label="This site">www.nevo.codes</a></p>
+          <p class="muted">Update links when profiles are ready.</p>
         </section>
       </div>
     </div>
@@ -173,47 +176,102 @@
   </div>
 
   <script>
-    // Simple boot lines (typewriter simulation without external libs)
+    // Boot sequence with error handling
     const boot = [
       "> INITIATE SYSTEM [ N.E.V.O. ]",
+      "> LOADING MODULES...",
       "> STATUS: ONLINE",
-      "> HINT: Use the toolbar or press 1..6 to navigate"
+      "> HINT: Use toolbar or press 1-6 to navigate"
     ];
+    
     const bootEl = document.getElementById('boot');
     let i = 0;
+    
     function nextLine() {
       if (i >= boot.length) return;
       const line = document.createElement('div');
       line.textContent = boot[i++];
+      line.style.opacity = '0';
+      line.style.transform = 'translateY(10px)';
       bootEl.appendChild(line);
-      setTimeout(nextLine, 360);
+      
+      // Smooth animation
+      requestAnimationFrame(() => {
+        line.style.transition = 'all 0.3s ease';
+        line.style.opacity = '1';
+        line.style.transform = 'translateY(0)';
+      });
+      
+      setTimeout(nextLine, 500);
     }
-    nextLine();
+    
+    // Start boot sequence after small delay
+    setTimeout(nextLine, 200);
 
-    // Section navigation
+    // Section navigation with improved error handling
     const buttons = document.querySelectorAll('button[data-target]');
     const sections = document.querySelectorAll('.section');
+    
     function activate(id) {
-      sections.forEach(s => s.classList.remove('active'));
-      const el = document.querySelector(id);
-      if (el) { el.classList.add('active'); el.focus(); }
-      buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.target === id ? 'true' : 'false'));
-      history.replaceState({}, '', id);
+      try {
+        sections.forEach(s => s.classList.remove('active'));
+        const targetSection = document.querySelector(id);
+        
+        if (targetSection) {
+          targetSection.classList.add('active');
+          targetSection.focus();
+        }
+        
+        buttons.forEach(b => {
+          b.setAttribute('aria-pressed', b.dataset.target === id ? 'true' : 'false');
+        });
+        
+        // Update URL without triggering page reload
+        if (history.replaceState) {
+          history.replaceState({}, '', id);
+        }
+      } catch (error) {
+        console.warn('Navigation error:', error);
+      }
     }
-    buttons.forEach(b => b.addEventListener('click', () => activate(b.dataset.target)));
-
-    // Keyboard shortcuts 1..6
-    const map = ['#intro','#nevo','#nebo','#jsgm','#manifesto','#contact'];
-    window.addEventListener('keydown', (e) => {
-      const n = parseInt(e.key, 10);
-      if (n>=1 && n<=6) activate(map[n-1]);
+    
+    // Button event listeners
+    buttons.forEach(b => {
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        activate(b.dataset.target);
+      });
     });
 
-    // Deep link support
-    if (location.hash && document.querySelector(location.hash)) activate(location.hash);
+    // Keyboard shortcuts (1-6)
+    const navigationMap = ['#intro','#nevo','#nebo','#jsgm','#manifesto','#contact'];
+    
+    window.addEventListener('keydown', (e) => {
+      const keyNum = parseInt(e.key, 10);
+      if (keyNum >= 1 && keyNum <= 6 && navigationMap[keyNum - 1]) {
+        e.preventDefault();
+        activate(navigationMap[keyNum - 1]);
+      }
+    });
 
-    // Year
+    // Handle deep links on page load
+    window.addEventListener('load', () => {
+      if (location.hash && document.querySelector(location.hash)) {
+        activate(location.hash);
+      }
+    });
+
+    // Set current year
     document.getElementById('year').textContent = new Date().getFullYear();
+    
+    // Add some visual feedback for deployment status
+    setTimeout(() => {
+      const statusElement = document.querySelector('.loading');
+      if (statusElement) {
+        statusElement.style.color = 'var(--ok)';
+        statusElement.textContent = 'FULLY OPERATIONAL';
+      }
+    }, 2000);
   </script>
 </body>
 </html>
