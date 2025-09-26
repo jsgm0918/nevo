@@ -6,76 +6,82 @@
   <title>N.E.V.O. — System Online</title>
   <meta name="description" content="N.E.V.O. — A living archive. NEVO: DJ/Producer/Sonic Curator. Nebo: Poet/Prose Writer. JSGM: Cultural Manager/Autoethnographic Researcher." />
   <meta name="theme-color" content="#0b0f10" />
-  <!-- Plausible (replace data-domain with your domain or vercel.app during tests) -->
+  <!-- Plausible (change data-domain to your domain or *.vercel.app while testing) -->
   <script defer data-domain="nevo.codes" src="https://plausible.io/js/script.js"></script>
   <style>
-    :root {
-      --bg:#0b0f10; --panel:#0f1416; --text:#e9f1ee; --muted:#9bb3ac;
-      --accent:#17ff9f; --accent-2:#4cffd0; --link:#8ef9ff; --shadow:0 10px 30px rgba(0,0,0,.45);
+    :root{
+      --bg:#0b0f10; --panel:#0f1416; --panel-2:#0d1214; --text:#e9f1ee; --muted:#9bb3ac;
+      --accent:#17ff9f; --accent-2:#4cffd0; --link:#8ef9ff; --ok:#9fff17; --warn:#ffd26a; --err:#ff3b6b;
+      --shadow:0 10px 30px rgba(0,0,0,.45);
     }
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);
+    body{
+      margin:0;background:var(--bg);color:var(--text);
       font:15px/1.65 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-    .wrap{max-width:980px;margin:0 auto;padding:22px 18px 96px}
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale
+    }
+    .wrap{max-width:1000px;margin:0 auto;padding:22px 18px 96px}
+    /* Terminal shell */
     .term{
-      position:relative;background:var(--panel);border:1px solid rgba(255,255,255,.08);
-      border-radius:14px;box-shadow:var(--shadow);padding:18px 18px 8px;backdrop-filter:blur(2px)
+      position:relative;background:var(--panel);border:1px solid #000;border-radius:14px;
+      box-shadow:var(--shadow);padding:18px 18px 8px;backdrop-filter:blur(2px)
     }
-    /* Minimal checkerboard frame (pure B/W, sharp squares, outside content) */
+    /* 2-tone checkerboard BORDER ONLY (outside), crisp squares */
     .term::before{
-      content:"";position:absolute;inset:-12px;border-radius:18px;z-index:-1;
-      background-image:
-        linear-gradient(90deg, #000 50%, #fff 50%),
-        linear-gradient(0deg,  #000 50%, #fff 50%);
-      background-size:20px 20px;
-      /* subtle inner stroke to make the edge read clearly on all screens */
-      box-shadow:0 0 0 2px #000 inset, 0 0 0 3px #fff inset;
+      content:"";position:absolute;z-index:-1;border-radius:18px;inset:-12px;
+      background:
+        linear-gradient(90deg,#000 50%,#fff 50%) 0 0/18px 18px,
+        linear-gradient(0deg,#000 50%,#fff 50%) 0 0/18px 18px;
+      mask:
+        radial-gradient(closest-side, #0000 calc(100% - 12px), #000 0);
+      -webkit-mask:
+        radial-gradient(closest-side, #0000 calc(100% - 12px), #000 0);
     }
+    /* top bar */
     .term-head{display:flex;align-items:center;gap:10px;padding-bottom:10px;border-bottom:1px dashed rgba(255,255,255,.14)}
     .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
     .dot.red{background:#ff5f56}.dot.yellow{background:#ffbd2e}.dot.green{background:#27c93f}
     .title{margin-left:6px;color:var(--muted);font-size:13px}
     .lang{margin-left:auto;display:flex;gap:6px}
-    .lang button{
-      font-size:12px;padding:6px 8px;border-radius:8px;background:transparent;color:var(--text);
-      border:1px solid rgba(255,255,255,.28);cursor:pointer;transition:.2s
-    }
+    .lang button{font-size:12px;padding:6px 8px;border-radius:8px;background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.28);cursor:pointer;transition:.2s}
     .lang button[aria-pressed="true"]{border-color:#fff;color:#fff}
-    .screen{padding:16px 4px 8px;min-height:220px}
+    /* content area */
+    .screen{padding:16px 4px 8px;min-height:260px}
     .prompt{color:var(--accent)}
     .cursor{display:inline-block;width:10px;height:1.1em;background:var(--accent);margin-left:3px;animation:blink 1s steps(1) infinite;vertical-align:-2px}
     @keyframes blink{50%{opacity:0}}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px}
-    @media (min-width:900px){.grid{grid-template-columns:1fr 1fr}}
-    .card{background:var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:16px}
-    h1,h2,h3{line-height:1.25;margin:0 0 10px}
-    h1{font-size:28px;letter-spacing:.6px}
-    h2{font-size:20px;color:var(--accent)}
-    h3{font-size:16px;color:var(--accent-2)}
-    p{margin:8px 0;color:var(--text)} small,.muted{color:var(--muted)}
-    .kbd{display:inline-block;padding:2px 6px;border:1px solid rgba(255,255,255,.28);border-radius:6px;color:var(--link)}
-    a{color:var(--link);text-decoration:none;border-bottom:1px dotted rgba(142,249,255,.4)}
-    a:hover{border-bottom-color:var(--link)}
     .btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;align-items:center}
     button{background:transparent;color:var(--text);border:1px solid rgba(255,255,255,.18);padding:8px 12px;border-radius:10px;cursor:pointer;transition:all .2s ease}
     button:hover{border-color:var(--accent);color:var(--accent)}
     .section{display:none;animation:fade .35s ease}
     .section.active{display:block}
     @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-    .list{margin:8px 0 0;padding-left:18px}
     footer{margin-top:36px;color:var(--muted);text-align:center}
-    .hr{height:1px;background:#222;margin:14px 0;border:0}
-    .status{color:#9fff17;font-weight:bold}
+    .hr{height:1px;background:#1a1f22;margin:14px 0;border:0}
+
+    /* Terminal-styled blocks */
+    .panel{
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
+      border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:14px 14px 10px
+    }
+    .log{background:var(--panel-2);border:1px dashed rgba(255,255,255,.18);border-radius:10px;padding:10px;font-size:14px;line-height:1.5;margin-top:10px;white-space:pre-wrap}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+    .chip{border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:2px 8px;font-size:12px;color:var(--muted)}
+    .meter{height:8px;border-radius:6px;background:#0a0e10;border:1px solid #111;overflow:hidden}
+    .meter > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:40%}
+    .kbd{display:inline-block;padding:2px 6px;border:1px solid rgba(255,255,255,.28);border-radius:6px;color:var(--link)}
+    .muted{color:var(--muted)}
+    h1,h2,h3{margin:0 0 10px;line-height:1.25}
+    h1{font-size:28px;letter-spacing:.6px}
+    h2{font-size:20px;color:var(--accent)}
+    h3{font-size:15px;color:var(--accent-2);letter-spacing:.2px}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="term" role="region" aria-label="N.E.V.O. Terminal">
+    <div class="term" role="region" aria-label="Terminal">
       <div class="term-head" aria-hidden="true">
-        <span class="dot red"></span>
-        <span class="dot yellow"></span>
-        <span class="dot green"></span>
+        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
         <span class="title" id="consoleTitle">N.E.V.O. — System Console</span>
         <div class="lang" role="group" aria-label="Language">
           <button id="langEN" aria-pressed="true">EN</button>
@@ -84,7 +90,7 @@
       </div>
 
       <div class="screen" id="screen" aria-live="polite">
-        <div class="btns" role="toolbar" aria-label="Primary Modules">
+        <div class="btns" role="toolbar" aria-label="Modules">
           <button data-target="#landing" aria-controls="landing" aria-pressed="true">/home</button>
           <button data-target="#intro" aria-controls="intro">/intro</button>
           <button data-target="#nevo" aria-controls="nevo">/nevo</button>
@@ -96,102 +102,140 @@
 
         <!-- LANDING ultra minimal -->
         <section id="landing" class="section active" tabindex="0">
-          <h1><span class="prompt">&gt;</span> <span data-i18n="landing.wake">Wake up, NEVO.</span><span class="cursor"></span></h1>
-          <p class="muted" data-i18n="landing.enter">Press ENTER to access.</p>
+          <div class="panel">
+            <h1><span class="prompt">&gt;</span> <span data-i18n="landing.wake">Wake up, NEVO.</span><span class="cursor"></span></h1>
+            <div class="log" id="landingLog">_</div>
+            <p class="muted" data-i18n="landing.enter">Press ENTER to access.</p>
+          </div>
         </section>
 
-        <!-- INTRO / ACCESS -->
+        <!-- INTRO -->
         <section id="intro" class="section" tabindex="0">
-          <h1><span class="prompt">&gt;</span> <span data-i18n="intro.title">INITIATE SYSTEM [ N.E.V.O. ]</span><span class="cursor"></span></h1>
-          <p data-i18n="intro.p">N.E.V.O. is my longing to exist and resist — poetically, musically, investigatively, and artistically-professionally.</p>
-          <p class="muted" data-i18n="intro.dec">Suggested decodings:</p>
-          <ul class="list">
-            <li>None Enthropical Voices & Others</li>
-            <li>Next Era Virtual Onthology</li>
-            <li>Neo-Esoteric Vibes & Orpheus?</li>
-          </ul>
-          <hr class="hr" />
-          <p><span class="kbd">ENTER</span> <span data-i18n="intro.hint">to proceed • choose a module above.</span></p>
-          <p class="status">STATUS: <span class="loading" data-i18n="boot.online">DEPLOYED & ONLINE</span></p>
+          <div class="panel">
+            <h1><span class="prompt">&gt;</span> <span data-i18n="intro.title">INITIATE SYSTEM [ N.E.V.O. ]</span><span class="cursor"></span></h1>
+            <p data-i18n="intro.p">N.E.V.O. is my longing to exist and resist — poetically, musically, investigatively, and artistically-professionally.</p>
+            <div class="chips">
+              <span class="chip">N.E.V.O.</span><span class="chip">Nebo</span><span class="chip">JSGM</span>
+            </div>
+            <div class="log">
+Suggested decodings:
+ - None Enthropical Voices & Others
+ - Next Era Virtual Onthology
+ - Neo-Esoteric Vibes & Orpheus?
+            </div>
+            <div style="margin-top:10px">
+              <div class="meter" aria-label="System readiness"><i style="width:100%"></i></div>
+              <p class="muted" style="margin-top:6px">
+                <span class="kbd">ENTER</span> <span data-i18n="intro.hint">to proceed • choose a module above.</span>
+                &nbsp; STATUS: <strong style="color:var(--ok)" data-i18n="boot.online">DEPLOYED & ONLINE</strong>
+              </p>
+            </div>
+          </div>
         </section>
 
         <!-- NEVO -->
         <section id="nevo" class="section" tabindex="0">
-          <h2 data-i18n="nevo.h2">[ NEVO ] — DJ Coder / Producer / Sonic Curator</h2>
-          <p data-i18n="nevo.p">NEVO inhabits genres, never forces them. Each set is an archive; each track, a testimony; each listening, an encounter.</p>
-          <div class="grid">
-            <div class="card"><h3 data-i18n="nevo.elec">Electronic</h3><p>techno · hardhouse · fastgroove · tekno · EBM · IDM · hardcore · experimental-punk · latinclub</p></div>
-            <div class="card"><h3 data-i18n="nevo.trop">Tropicalísimo</h3><p>cumbia · salsa · porro · vallenato · merengue · lambada · electrocumbia · tropicanibalism</p></div>
-            <div class="card"><h3>Ska / Reggae / Punk (LATAM)</h3><p>Mexico · Colombia · Argentina · Peru · Brazil — local scenes, local stories, local sound.</p></div>
-            <div class="card"><h3 data-i18n="nevo.method">Method</h3><p data-i18n="nevo.methodp">Autoethnographic practice: researching while creating, curating while researching; documenting with handle-care; returning human value to digital communities.</p></div>
-          </div>
-          <div class="card" style="margin-top:12px">
-            <h3 data-i18n="nevo.dig">Dig deeper</h3>
-            <ul class="list">
-              <li><a href="#" onclick="openDig('afflictions');return false;">/afflictions</a> — <span data-i18n="nevo.aff">what hurts, what heals, what drives the mix.</span></li>
-              <li><a href="#" onclick="openDig('inclinations');return false;">/inclinations</a> — <span data-i18n="nevo.inc">tastes, tempos, textures I return to.</span></li>
-              <li><a href="#" onclick="openDig('explorations');return false;">/explorations</a> — <span data-i18n="nevo.exp">scenes, formats, crossovers I’m testing.</span></li>
-              <li><a href="#" onclick="openDig('landscapes');return false;">/landscapes</a> — <span data-i18n="nevo.land">cities, crews, memories shaping the sound.</span></li>
-            </ul>
+          <div class="panel">
+            <h2 data-i18n="nevo.h2">[ NEVO ] — DJ Coder / Producer / Sonic Curator</h2>
+            <p data-i18n="nevo.p">NEVO inhabits genres, never forces them. Each set is an archive; each track, a testimony; each listening, an encounter.</p>
+            <div class="log">
+/electronic   techno · hardhouse · fastgroove · tekno · EBM · IDM · hardcore · experimental-punk · latinclub
+/tropical     cumbia · salsa · porro · vallenato · merengue · lambada · electrocumbia · tropicanibalism
+/latam        ska · reggae · punk  → Mexico | Colombia | Argentina | Peru | Brazil
+            </div>
+            <div class="chips">
+              <span class="chip">138–145 BPM</span><span class="chip">syncopation</span><span class="chip">warehouse memory</span><span class="chip">local scenes</span>
+            </div>
+            <div class="log" style="margin-top:10px">
+/method
+ - researching while creating
+ - curating while researching
+ - document with care
+ - return value to communities
+            </div>
+            <div class="panel" style="margin-top:10px">
+              <h3 data-i18n="nevo.dig">Dig deeper</h3>
+              <p class="muted">/afflictions • /inclinations • /explorations • /landscapes</p>
+            </div>
           </div>
         </section>
 
-        <!-- NEBO (with /prose lab) -->
+        <!-- NEBO -->
         <section id="nebo" class="section" tabindex="0">
-          <h2 data-i18n="nebo.h2">[ NEBO ] — Poet / Proser / Storyteller</h2>
-          <p data-i18n="nebo.p">Nebo is the intimate voice: poems, essays, novels, short stories that move as counterpoint wound to a sentient beat. Words become echoes; echoes become rhythm; rhythm becomes a shared consciousness archive.</p>
-          <div class="card"><h3 data-i18n="nebo.excerpt">Excerpt</h3><p><em data-i18n="nebo.quote">“I will always be Nenebo for the family, it's my childhood key and echo remembrance. Now I am an author as Nebo, where silence turns into pulse and memory becomes a safe-place we can meet.”</em></p></div>
-          <div class="card">
-            <h3 data-i18n="nebo.prose">/prose — Experimental Prompt Lab</h3>
-            <p data-i18n="nebo.prosep">Enter a concept and receive a transcultural, interartistic seed-prompt to expand creatively.</p>
-            <p>
-              <input id="idea" placeholder="concept / idea" aria-label="concept"
-                     style="background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:8px;color:var(--text);padding:6px 8px" />
-              <button id="genPrompt">/generate</button>
-            </p>
-            <div id="promptOut" class="muted"></div>
+          <div class="panel">
+            <h2 data-i18n="nebo.h2">[ NEBO ] — Poet / Proser / Storyteller</h2>
+            <p data-i18n="nebo.p">Nebo is the intimate voice: poems, essays, novels, short stories that move as counterpoint wound to a sentient beat. Words become echoes; echoes become rhythm; rhythm becomes a shared consciousness archive.</p>
+            <div class="log"><em data-i18n="nebo.quote">“I will always be Nenebo for the family, it's my childhood key and echo remembrance. Now I am an author as Nebo, where silence turns into pulse and memory becomes a safe-place we can meet.”</em></div>
+            <div class="panel" style="margin-top:10px">
+              <h3 data-i18n="nebo.prose">/prose — Experimental Prompt Lab</h3>
+              <p class="muted" data-i18n="nebo.prosep">Enter a concept and receive a transcultural, interartistic seed-prompt to expand creatively.</p>
+              <p>
+                <input id="idea" placeholder="concept / idea" aria-label="concept"
+                       style="background:transparent;border:1px solid rgba(255,255,255,.2);border-radius:8px;color:var(--text);padding:6px 8px" />
+                <button id="genPrompt">/generate</button>
+              </p>
+              <div id="promptOut" class="log" aria-live="polite"></div>
+            </div>
           </div>
         </section>
 
         <!-- JSGM -->
         <section id="jsgm" class="section" tabindex="0">
-          <h2 data-i18n="jsgm.h2">[ JSGM ] — AI Autoetnographic Researcher / Cultural Manager Hacker</h2>
-          <p data-i18n="jsgm.p">Juan Sebastián González Muñoz feeds the system. His augmented human-blending creative hack & a/r/t/ivism become flourish and spectral fuel for N.E.V.O. explorations and curations.</p>
-          <div class="card"><h3 data-i18n="jsgm.focus">Focus</h3><p data-i18n="jsgm.focusp">Hacking consulting · AuI non-bullshitter · sentient automation · data governance · creative industries · inclusive strategies · XAI-assisted analysis.</p></div>
+          <div class="panel">
+            <h2 data-i18n="jsgm.h2">[ JSGM ] — AI Autoetnographic Researcher / Cultural Manager Hacker</h2>
+            <p data-i18n="jsgm.p">Juan Sebastián González Muñoz feeds the system. His augmented human-blending creative hack & a/r/t/ivism become flourish and spectral fuel for N.E.V.O. explorations and curations.</p>
+            <div class="log">
+/focus
+ - Hacking consulting
+ - AuI non-bullshitter
+ - Sentient automation
+ - Data governance
+ - Creative industries
+ - Inclusive strategies
+ - XAI-assisted analysis
+            </div>
+          </div>
         </section>
 
-        <!-- MANIFESTO (auto-typing) -->
+        <!-- MANIFESTO -->
         <section id="manifesto" class="section" tabindex="0">
-          <h2>[ MANIFESTO ] — <span data-i18n="man.core">Core</span></h2>
-          <div class="card"><pre id="manText" style="white-space:pre-wrap;margin:0"></pre></div>
+          <div class="panel">
+            <h2>[ MANIFESTO ] — <span data-i18n="man.core">Core</span></h2>
+            <div class="log" id="manText" style="white-space:pre-wrap"></div>
+          </div>
         </section>
 
-        <!-- CONTACT (with press) -->
+        <!-- CONTACT -->
         <section id="contact" class="section" tabindex="0">
-          <h2>[ CONTACT ] — <span data-i18n="contact.ap">Access Points</span></h2>
-          <p>Email: <a href="mailto:jsgm0918@gmail.com">jsgm0918@gmail.com</a></p>
-          <p>LinkedIn: <a href="https://www.linkedin.com/in/sebastiang0918" target="_blank" rel="noopener">linkedin.com/in/sebastiang0918</a></p>
-          <p>SoundCloud / Mixcloud: <a href="#" aria-label="Coming soon">@nevo</a></p>
-          <p>Instagram / TikTok: <a href="#" aria-label="Coming soon">@nevo</a></p>
-          <p>Web / Repository: <a href="#" aria-label="This site">www.nevo.codes</a></p>
-          <details style="margin-top:12px"><summary>/press — <span data-i18n="press.bio">Bio & micro</span></summary>
-            <div class="card" style="margin-top:8px"><h3>150-word bio</h3>
-              <p data-i18n="press.long">NEVO is a DJ/producer and sonic curator from Bogotá whose sets move between techno, EBM, hardcore and latinclub while tracing lines back to cumbia, salsa and regional ska-punk. Working under the literary alias Nebo, he publishes poems and prose that echo the same questions driving his mixes: who holds a genre’s memory, and how do communities shape the dance? Trained in business and anthropology, he approaches music as a living archive: research while creating, create while researching, document with care, credit sources, return value to the scenes that made us. NEVO inhabits genres instead of forcing them; each track is a testimony, each set a conversation. His practice is alternative, disruptive and empathetic, inviting listeners to cross bridges without erasing differences. Upcoming work includes hybrid performances that weave spoken text with club energy, and collaborative projects with local collectives, labs and cultural institutions.</p>
+          <div class="panel">
+            <h2>[ CONTACT ] — <span data-i18n="contact.ap">Access Points</span></h2>
+            <div class="log">
+email      jsgm0918@gmail.com
+linkedin   linkedin.com/in/sebastiang0918
+sound/mix  @nevo
+social     @nevo
+web        www.nevo.codes
             </div>
-            <div class="card" style="margin-top:8px"><h3>2-line micro</h3>
-              <p><strong>EN:</strong> NEVO blends club intensity with regional memory; Nebo writes the echo. Sets as archives, words as rhythm.<br><strong>ES:</strong> NEVO cruza la energía del club con la memoria regional; Nebo escribe el eco. Sets como archivos, palabras como ritmo.</p>
-            </div>
-          </details>
-          <p class="muted" data-i18n="contact.update">Update links when profiles are ready.</p>
+            <details style="margin-top:10px"><summary>/press — <span data-i18n="press.bio">Bio & micro</span></summary>
+              <div class="log" style="margin-top:8px">
+[150-word bio]
+NEVO is a DJ/producer and sonic curator from Bogotá whose sets move between techno, EBM, hardcore and latinclub while tracing lines back to cumbia, salsa and regional ska-punk. Working under the literary alias Nebo, he publishes poems and prose that echo the same questions driving his mixes: who holds a genre’s memory, and how do communities shape the dance? Trained in business and anthropology, he approaches music as a living archive: research while creating, create while researching, document with care, credit sources, return value to the scenes that made us. NEVO inhabits genres instead of forcing them; each track is a testimony, each set a conversation. His practice is alternative, disruptive and empathetic, inviting listeners to cross bridges without erasing differences. Upcoming work includes hybrid performances that weave spoken text with club energy, and collaborative projects with local collectives, labs and cultural institutions.
+
+[2-line micro]
+EN: NEVO blends club intensity with regional memory; Nebo writes the echo. Sets as archives, words as rhythm.
+ES: NEVO cruza la energía del club con la memoria regional; Nebo escribe el eco. Sets como archivos, palabras como ritmo.
+              </div>
+            </details>
+            <p class="muted" style="margin-top:10px" data-i18n="contact.update">Update links when profiles are ready.</p>
+          </div>
         </section>
       </div>
     </div>
-
     <footer><small id="footerText">© <span id="year"></span> NEVO / Nebo — A living archive. All rights reserved. Respect artists & communities. No scraping without consent.</small></footer>
   </div>
 
   <script>
-    // ===== Simple i18n =====
+    // ===== i18n =====
     const i18n = {
       en:{
         'console':'N.E.V.O. — System Console',
@@ -200,20 +244,16 @@
         'boot.online':'DEPLOYED & ONLINE',
         'intro.title':'INITIATE SYSTEM [ N.E.V.O. ]',
         'intro.p':'N.E.V.O. is my longing to exist and resist — poetically, musically, investigatively, and artistically-professionally.',
-        'intro.dec':'Suggested decodings:','intro.hint':'to proceed • choose a module above.',
+        'intro.hint':'to proceed • choose a module above.',
         'nevo.h2':'[ NEVO ] — DJ Coder / Producer / Sonic Curator',
         'nevo.p':'NEVO inhabits genres, never forces them. Each set is an archive; each track, a testimony; each listening, an encounter.',
-        'nevo.elec':'Electronic','nevo.trop':'Tropicalísimo','nevo.method':'Method',
-        'nevo.methodp':'Autoethnographic practice: researching while creating, curating while researching; documenting with handle-care; returning human value to digital communities.',
-        'nevo.dig':'Dig deeper','nevo.aff':'what hurts, what heals, what drives the mix.','nevo.inc':'tastes, tempos, textures I return to.','nevo.exp':'scenes, formats, crossovers I’m testing.','nevo.land':'cities, crews, memories shaping the sound.',
+        'nevo.dig':'Dig deeper',
         'nebo.h2':'[ NEBO ] — Poet / Proser / Storyteller',
         'nebo.p':'Nebo is the intimate voice: poems, essays, novels, short stories that move as counterpoint wound to a sentient beat. Words become echoes; echoes become rhythm; rhythm becomes a shared consciousness archive.',
-        'nebo.excerpt':'Excerpt',
         'nebo.quote':'“I will always be Nenebo for the family, it\'s my childhood key and echo remembrance. Now I am an author as Nebo, where silence turns into pulse and memory becomes a safe-place we can meet.”',
         'nebo.prose':'/prose — Experimental Prompt Lab','nebo.prosep':'Enter a concept and receive a transcultural, interartistic seed-prompt to expand creatively.',
         'jsgm.h2':'[ JSGM ] — AI Autoetnographic Researcher / Cultural Manager Hacker',
         'jsgm.p':'Juan Sebastián González Muñoz feeds the system. His augmented human-blending creative hack & a/r/t/ivism become flourish and spectral fuel for N.E.V.O. explorations and curations.',
-        'jsgm.focus':'Focus','jsgm.focusp':'Hacking consulting · AuI non-bullshitter · sentient automation · data governance · creative industries · inclusive strategies · XAI-assisted analysis.',
         'man.core':'Core',
         'contact.ap':'Access Points','contact.update':'Update links when profiles are ready.',
         'press.bio':'Bio & micro'
@@ -225,20 +265,16 @@
         'boot.online':'DESPLEGADO Y EN LÍNEA',
         'intro.title':'INICIAR SISTEMA [ N.E.V.O. ]',
         'intro.p':'N.E.V.O. es mi anhelo de existir y resistir — poéticamente, musicalmente, investigativamente y profesional-artísticamente.',
-        'intro.dec':'Decodificaciones sugeridas:','intro.hint':'para continuar • elige un módulo arriba.',
+        'intro.hint':'para continuar • elige un módulo arriba.',
         'nevo.h2':'[ NEVO ] — DJ Coder / Productor / Curador Sonoro',
         'nevo.p':'NEVO habita los géneros, no los fuerza. Cada set es un archivo; cada track, un testimonio; cada escucha, un encuentro.',
-        'nevo.elec':'Electrónica','nevo.trop':'Tropicalísimo','nevo.method':'Método',
-        'nevo.methodp':'Práctica autoetnográfica: investigar creando, curar investigando; documentar con cuidado; devolver valor humano a las comunidades digitales.',
-        'nevo.dig':'Profundizar','nevo.aff':'lo que duele, lo que cura, lo que impulsa la mezcla.','nevo.inc':'gustos, tempos y texturas a las que vuelvo.','nevo.exp':'escenas, formatos y cruces que estoy probando.','nevo.land':'ciudades, parches y memorias que moldean el sonido.',
+        'nevo.dig':'Profundizar',
         'nebo.h2':'[ NEBO ] — Poeta / Prosista / Narrador',
         'nebo.p':'Nebo es la voz íntima: poemas, ensayos, novelas y cuentos que se mueven como contracanto herido a un pulso sintiente. Las palabras se vuelven eco; el eco ritmo; el ritmo archivo de conciencia compartida.',
-        'nebo.excerpt':'Fragmento',
         'nebo.quote':'"Siempre seré Nenebo para la familia, es mi llave de infancia y eco de memoria. Ahora soy autor como Nebo, donde el silencio se vuelve pulso y la memoria un lugar seguro para encontrarnos."',
         'nebo.prose':'/prose — Laboratorio de Prompts Experimental','nebo.prosep':'Ingresa un concepto y recibe una semilla-prompt transcultural e interartística para expandir creativamente.',
         'jsgm.h2':'[ JSGM ] — Investigador Autoetnográfico de IA / Gestor Cultural Hacker',
         'jsgm.p':'Juan Sebastián González Muñoz alimenta el sistema. Su hack creativo human-augmented y a/r/t/ivismo se vuelven combustible espectral para las exploraciones y curadurías de N.E.V.O.',
-        'jsgm.focus':'Enfoque','jsgm.focusp':'Consultoría hacking · AuI sin humo · automatización sintiente · gobernanza de datos · industrias creativas · estrategias inclusivas · análisis con XAI.',
         'man.core':'Núcleo',
         'contact.ap':'Puntos de acceso','contact.update':'Actualiza los enlaces cuando los perfiles estén listos.',
         'press.bio':'Bio y micro'
@@ -248,7 +284,7 @@
     const $ = (s)=>document.querySelector(s);
     const $$ = (s)=>document.querySelectorAll(s);
 
-    // Language state & apply
+    // Language state
     const storedLang = localStorage.getItem('nevo_lang');
     let curLang = storedLang ? storedLang : ((navigator.language||'en').toLowerCase().startsWith('es') ? 'es' : 'en');
 
@@ -267,26 +303,37 @@
       $('#langES').setAttribute('aria-pressed', String(lang==='es'));
     }
 
-    // Navigation
+    // Navigation helpers
+    const flow = ['#landing','#intro','#nevo','#nebo','#jsgm','#manifesto','#contact'];
+    function currentIndex(){ const cur = $('.section.active'); return Math.max(0, flow.indexOf('#'+cur.id)); }
     function activate(id){
       $$('.section').forEach(s=>s.classList.remove('active'));
       const el=$(id); if(el){ el.classList.add('active'); el.focus(); }
       $$('button[data-target]').forEach(b=> b.setAttribute('aria-pressed', b.dataset.target===id ? 'true':'false'));
       if(history.replaceState) history.replaceState({},'',id);
     }
+    function nextSection(){ const idx=currentIndex(); const next=flow[(idx+1)%flow.length]; activate(next); }
 
     // Events
     $('#langEN').addEventListener('click', ()=> setLang('en'));
     $('#langES').addEventListener('click', ()=> setLang('es'));
     window.addEventListener('keydown', (e)=>{
-      if(e.key==='Enter' && $('#landing').classList.contains('active')) activate('#intro');
-      const n=parseInt(e.key,10);
-      const map=['#landing','#intro','#nevo','#nebo','#jsgm','#manifesto','#contact'];
-      if(n>=1 && n<=7) activate(map[n-1]);
+      if(e.key==='Enter'){ nextSection(); }
+      const n=parseInt(e.key,10); if(n>=1 && n<=7) activate(flow[n-1]);
     });
     $$('button[data-target]').forEach(b=> b.addEventListener('click', e=>{ e.preventDefault(); activate(b.dataset.target); }));
 
-    // /prose — simple prompt seed generator (local, minimal)
+    // Landing typing minimal log
+    (function(){
+      const log = $('#landingLog');
+      const linesEN = ["> Booting interface...", "> Handshake accepted.", "> Enter to continue."];
+      const linesES = ["> Iniciando interfaz...", "> Handshake aceptado.", "> Presiona Enter."];
+      const L = (curLang==='es')?linesES:linesEN;
+      let i=0; function step(){ if(i>=L.length) return; log.textContent += (log.textContent==='_'?'':"\n") + L[i++]; setTimeout(step, 520); }
+      log.textContent = "_"; setTimeout(()=>{ log.textContent=""; step(); }, 200);
+    })();
+
+    // /prose — seed prompt generator (local)
     $('#genPrompt').addEventListener('click', ()=>{
       const v = ($('#idea').value||'signal').trim();
       const EN = [
@@ -306,7 +353,7 @@
       $('#promptOut').textContent = pick;
     });
 
-    // Manifesto auto-typing (continuous)
+    // Manifesto — continuous “self-typing”
     (function(){
       const el = $('#manText');
       const copyEN = 'N.E.V.O. is not spectacle. Not mere entertainment. It is a living archive: an open space where music, words and memory activate together! Alternative, disruptive, empathetic.\nThis is Nevo, prosing as Nebo. I am transit and creation. I am the new longevous.';
@@ -314,9 +361,9 @@
       let base = (curLang==='es') ? copyES : copyEN;
       let i=0, dir=1;
       function loop(){ el.textContent = base.slice(0,i) + (i%3===0?'_':''); i+=dir; if(i>=base.length+3) dir=-1; if(i<=0) dir=1; setTimeout(loop, 40); }
-      // Re-render on language change
-      const origSetLang = setLang;
-      setLang = function(lang){ origSetLang(lang); base = (curLang==='es') ? copyES : copyEN; };
+      // rebind language change to update text base
+      const _setLang = setLang;
+      setLang = function(lang){ _setLang(lang); base = (curLang==='es') ? copyES : copyEN; };
       loop();
     })();
 
@@ -324,22 +371,21 @@
     setLang(curLang);
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // /nevo "Dig deeper" alerts
+    // Dig deeper (nevo)
     function openDig(which){
-      const notesEN = {
+      const EN = {
         afflictions:'Restless rhythms; industrial textures; border tempos. The ache is the engine.',
         inclinations:'138–145 BPM lanes; drum workouts; syncopated lows; sudden silences.',
         explorations:'Local scenes × club tools; ska-punk memories remapped to warehouse pressure.',
         landscapes:'Bogotá nights; Andean winds; street vendors at dawn; friends who kept the light on.'
       };
-      const notesES = {
+      const ES = {
         afflictions:'Ritmos inquietos; texturas industriales; tempos fronterizos. La punzada es el motor.',
         inclinations:'Carriles 138–145 BPM; drills de batería; subs sincopados; silencios súbitos.',
         explorations:'Escenas locales × herramientas de club; memorias ska-punk mapeadas a presión warehouse.',
         landscapes:'Noches bogotanas; vientos andinos; vendedores al alba; amistades que sostienen la luz.'
       };
-      const bank = (curLang==='es') ? notesES : notesEN;
-      alert('/'+which+'\n'+(bank[which]||''));
+      alert('/'+which+'\n'+ ((curLang==='es')?ES[which]:EN[which]));
     }
     window.openDig=openDig;
   </script>
