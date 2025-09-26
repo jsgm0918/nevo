@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>N.E.V.O. — System Online</title>
+  <meta name="description" content="N.E.V.O. — A living archive. NEVO: DJ/Producer/Sonic Curator. Nebo: Poet/Prose Writer. JSGM: Cultural Manager/Researcher." />
+  <meta name="theme-color" content="#101416" />
+  <style>
+    :root {
+      --bg: #0b0f10;
+      --panel: #0f1416;
+      --text: #d7e7e3;
+      --muted: #97a7a1;
+      --accent: #17ff9f;
+      --accent-2: #4cffd0;
+      --danger: #ff3b6b;
+      --ok: #9fff17;
+      --link: #8ef9ff;
+      --shadow: 0 10px 30px rgba(0,0,0,.45);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: radial-gradient(60% 80% at 50% 20%, #0e1416 0%, var(--bg) 60%);
+      color: var(--text);
+      font: 15px/1.65 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      letter-spacing: .2px;
+      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 22px 18px 96px; }
+    .term {
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0));
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 18px 18px 8px;
+      backdrop-filter: blur(2px);
+    }
+    .term-head { display:flex; align-items:center; gap:10px; padding-bottom:10px; border-bottom:1px dashed rgba(255,255,255,.08); }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display:inline-block; }
+    .dot.red { background:#ff5f56; }
+    .dot.yellow { background:#ffbd2e; }
+    .dot.green { background:#27c93f; }
+    .title { margin-left: 6px; color: var(--muted); font-size: 13px; }
+    .screen { padding:16px 4px 8px; min-height: 220px; }
+    .prompt { color: var(--accent); }
+    .cursor { display:inline-block; width:10px; height:1.1em; background: var(--accent); margin-left:3px; animation: blink 1s steps(1) infinite; vertical-align:-2px; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .grid { display:grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+    .card { background: var(--panel); border:1px solid rgba(255,255,255,.06); border-radius: 12px; padding:16px; }
+    h1, h2, h3 { line-height:1.25; margin: 0 0 10px; }
+    h1 { font-size: 28px; letter-spacing: .6px; }
+    h2 { font-size: 20px; color: var(--accent); }
+    h3 { font-size: 16px; color: var(--accent-2); }
+    p { margin: 8px 0; color: var(--text); }
+    small, .muted { color: var(--muted); }
+    .kbd { display:inline-block; padding: 2px 6px; border:1px solid rgba(255,255,255,.18); border-radius: 6px; color: var(--link); }
+    a { color: var(--link); text-decoration: none; border-bottom: 1px dotted rgba(142,249,255,.4); }
+    a:hover { border-bottom-color: var(--link); }
+    .btns { display:flex; flex-wrap: wrap; gap:10px; margin: 14px 0; }
+    button { background: transparent; color: var(--text); border:1px solid rgba(255,255,255,.18); padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+    button:hover { border-color: var(--accent); color: var(--accent); }
+    .section { display:none; animation: fade .35s ease; }
+    .section.active { display:block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(4px);} to { opacity: 1; transform: none; } }
+    .list { margin: 8px 0 0; padding-left: 18px; }
+    footer { margin-top: 36px; color: var(--muted); text-align:center; }
+    .hr { height:1px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.14), rgba(255,255,255,0)); margin: 14px 0; border:0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="term" role="region" aria-label="N.E.V.O. Terminal">
+      <div class="term-head" aria-hidden="true">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="title">N.E.V.O. — System Console</span>
+      </div>
+      <div class="screen" id="screen" aria-live="polite">
+        <div id="boot"></div>
+        <div class="btns" role="toolbar" aria-label="Primary Modules">
+          <button data-target="#intro" aria-controls="intro" aria-pressed="true">/intro</button>
+          <button data-target="#nevo" aria-controls="nevo">/nevo</button>
+          <button data-target="#nebo" aria-controls="nebo">/nebo</button>
+          <button data-target="#jsgm" aria-controls="jsgm">/research</button>
+          <button data-target="#manifesto" aria-controls="manifesto">/manifesto</button>
+          <button data-target="#contact" aria-controls="contact">/contact</button>
+        </div>
+
+        <!-- INTRO / ACCESS -->
+        <section id="intro" class="section active" tabindex="0">
+          <h1><span class="prompt">&gt;</span> INITIATE SYSTEM [ N.E.V.O. ]<span class="cursor"></span></h1>
+          <p><strong>N.E.V.O.</strong> is not just a name — it's a code. A universal script you can read your way.</p>
+          <p class="muted">Common decodings include:</p>
+          <ul class="list">
+            <li>New Ecosystem of Voices & Others</li>
+            <li>Next Era Virtual Operator</li>
+            <li>Nexus of Experiences, Vibes & Origins</li>
+          </ul>
+          <hr class="hr" />
+          <p><span class="kbd">ENTER</span> to proceed • choose a module above.</p>
+        </section>
+
+        <!-- NEVO -->
+        <section id="nevo" class="section" tabindex="0">
+          <h2>[ NEVO ] — DJ / Producer / Sonic Curator</h2>
+          <p>NEVO inhabits genres, never forces them. Each set is an archive; each track, a testimony; each listening, an encounter.</p>
+          <div class="grid">
+            <div class="card">
+              <h3>Electronic</h3>
+              <p>techno · hardhouse · fastgroove · tekno · EBM · IDM · hardcore · experimental‑punk · latinclub</p>
+            </div>
+            <div class="card">
+              <h3>Tropicalities</h3>
+              <p>cumbia · salsa · porro · vallenato · merengue · lambada · electrocumbia · tropicanibalism</p>
+            </div>
+            <div class="card">
+              <h3>Ska / Reggae / Punk (LATAM)</h3>
+              <p>Mexico · Colombia · Argentina · Peru · Brazil — local scenes, local stories, local sound.</p>
+            </div>
+            <div class="card">
+              <h3>Method</h3>
+              <p>Autoethnographic practice: researching while creating, creating while researching; documenting with care; returning value to communities.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- NEBO -->
+        <section id="nebo" class="section" tabindex="0">
+          <h2>[ NEBO ] — Poet / Prose Writer / Storyteller</h2>
+          <p>Nebo is the intimate voice: poems, essays, short stories that move as counterpoint to the beat. Words become echoes; echoes become rhythm; rhythm becomes a shared archive.</p>
+          <div class="card">
+            <h3>Excerpt</h3>
+            <p><em>“I used to be Nenebo — a childhood key. Now I write as Nebo, where silence turns into pulse and memory becomes a place we can meet.”</em></p>
+          </div>
+        </section>
+
+        <!-- JSGM / RESEARCH -->
+        <section id="jsgm" class="section" tabindex="0">
+          <h2>[ RESEARCH ] — Cultural Manager / Autoethnographic Researcher</h2>
+          <p>Juan Sebastián González Muñoz feeds the system. Consulting, data and innovation work become fuel for NEVO/Nebo explorations and curations.</p>
+          <div class="card">
+            <h3>Focus</h3>
+            <p>Public sector consulting · process automation · data governance · creative industries · inclusive strategies · AI‑assisted analysis.</p>
+          </div>
+        </section>
+
+        <!-- MANIFESTO -->
+        <section id="manifesto" class="section" tabindex="0">
+          <h2>[ MANIFESTO ] — Core</h2>
+          <p>N.E.V.O. is not spectacle. Not mere entertainment. It is a living archive — an open space where music, words and memory activate together. Alternative, disruptive, empathetic.</p>
+          <p>I am NEVO. I am Nebo. I am transit and creation. I am the new longevous.</p>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="section" tabindex="0">
+          <h2>[ CONTACT ] — Access Points</h2>
+          <p>Email: <a href="mailto:sebastiang0918@gmail.com">sebastiang0918@gmail.com</a></p>
+          <p>LinkedIn: <a href="https://www.linkedin.com/in/sebastiang0918" target="_blank" rel="noopener">linkedin.com/in/sebastiang0918</a></p>
+          <p>SoundCloud / Mixcloud: <a href="#" aria-disabled="true">@nevo</a></p>
+          <p>Instagram / TikTok: <a href="#" aria-disabled="true">@nevo</a></p>
+          <p>Web / Repository: <a href="#" aria-disabled="true">www.nevo.codes</a></p>
+          <p class="muted">Replace placeholders with your live links when ready.</p>
+        </section>
+      </div>
+    </div>
+
+    <footer>
+      <small>© <span id="year"></span> NEVO / Nebo — A living archive. All rights reserved.</small>
+    </footer>
+  </div>
+
+  <script>
+    // Simple boot lines (typewriter simulation without external libs)
+    const boot = [
+      "> INITIATE SYSTEM [ N.E.V.O. ]",
+      "> STATUS: ONLINE",
+      "> HINT: Use the toolbar or press 1..6 to navigate"
+    ];
+    const bootEl = document.getElementById('boot');
+    let i = 0;
+    function nextLine() {
+      if (i >= boot.length) return;
+      const line = document.createElement('div');
+      line.textContent = boot[i++];
+      bootEl.appendChild(line);
+      setTimeout(nextLine, 360);
+    }
+    nextLine();
+
+    // Section navigation
+    const buttons = document.querySelectorAll('button[data-target]');
+    const sections = document.querySelectorAll('.section');
+    function activate(id) {
+      sections.forEach(s => s.classList.remove('active'));
+      const el = document.querySelector(id);
+      if (el) { el.classList.add('active'); el.focus(); }
+      buttons.forEach(b => b.setAttribute('aria-pressed', b.dataset.target === id ? 'true' : 'false'));
+      history.replaceState({}, '', id);
+    }
+    buttons.forEach(b => b.addEventListener('click', () => activate(b.dataset.target)));
+
+    // Keyboard shortcuts 1..6
+    const map = ['#intro','#nevo','#nebo','#jsgm','#manifesto','#contact'];
+    window.addEventListener('keydown', (e) => {
+      const n = parseInt(e.key, 10);
+      if (n>=1 && n<=6) activate(map[n-1]);
+    });
+
+    // Deep link support
+    if (location.hash && document.querySelector(location.hash)) activate(location.hash);
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
